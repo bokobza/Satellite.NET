@@ -14,7 +14,7 @@ namespace Satellite.NET
         /// <summary>
         /// The URL of the API.
         /// </summary>
-        private readonly string apiUrl;
+        public string ApiUrl { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="SatelliteApi"/>.
@@ -22,7 +22,7 @@ namespace Satellite.NET
         /// <param name="testApi">Whether the API used shoud be Mainnet (default) or Testnet.</param>
         public SatelliteApi(bool testApi = false)
         {
-            this.apiUrl = testApi ? Constants.ApiUrlTest : Constants.ApiUrlMain;
+            this.ApiUrl = testApi ? Constants.ApiUrlTest : Constants.ApiUrlMain;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Satellite.NET
                 throw new FormatException($"'{customHost}' is not a valid URL.");
             }
             
-            this.apiUrl = customHost;
+            this.ApiUrl = customHost;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Satellite.NET
 
                     FileStream fs = File.OpenRead(filePath);
 
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.CreateOrderEndpoint)
                     .PostMultipartAsync(mp => mp
                     .AddString("bid", bid.ToString())
@@ -81,7 +81,7 @@ namespace Satellite.NET
                 }
                 else if (!string.IsNullOrEmpty(message))
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.CreateOrderEndpoint)
                     .PostMultipartAsync(mp => mp
                     .AddString("bid", bid.ToString())
@@ -108,7 +108,7 @@ namespace Satellite.NET
         {
             try
             {
-                InvoiceModel invoice = await this.apiUrl
+                InvoiceModel invoice = await this.ApiUrl
                 .AppendPathSegment(string.Format(Constants.BumpOrderEndpoint, orderId))
                 .WithHeader("X-Auth-Token", authToken)
                 .PostMultipartAsync(mp => mp
@@ -133,7 +133,7 @@ namespace Satellite.NET
         {
             try
             {
-                OrderModel order = await this.apiUrl
+                OrderModel order = await this.ApiUrl
                     .AppendPathSegment(string.Format(Constants.GetOrderEndpoint, orderId))
                     .WithHeader("X-Auth-Token", authToken)
                     .GetJsonAsync<OrderModel>();
@@ -156,7 +156,7 @@ namespace Satellite.NET
         {
             try
             {
-                MessageModel result = await this.apiUrl
+                MessageModel result = await this.ApiUrl
                     .AppendPathSegment(string.Format(Constants.CancelOrderEndpoint, orderId))
                     .WithHeader("X-Auth-Token", authToken)
                     .DeleteAsync().ReceiveJson<MessageModel>();
@@ -182,14 +182,14 @@ namespace Satellite.NET
 
                 if (limit != null)
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetQueuedOrdersEndpoint)
                     .SetQueryParams(new { limit = limit.Value })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetQueuedOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
@@ -215,14 +215,14 @@ namespace Satellite.NET
 
                 if (before != null)
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetSentOrdersEndpoint)
                     .SetQueryParams(new { before = before.Value.ToString("o") })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetSentOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
@@ -248,14 +248,14 @@ namespace Satellite.NET
 
                 if (before != null)
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetPendingOrdersEndpoint)
                     .SetQueryParams(new { before = before.Value.ToString("o") })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.apiUrl
+                    invoice = await this.ApiUrl
                     .AppendPathSegment(Constants.GetPendingOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
@@ -276,7 +276,7 @@ namespace Satellite.NET
         {
             try
             {
-                InfoModel info = await this.apiUrl
+                InfoModel info = await this.ApiUrl
                     .AppendPathSegment(Constants.InfoEndpoint)
                     .GetJsonAsync<InfoModel>();
 
@@ -297,7 +297,7 @@ namespace Satellite.NET
         {
             try
             {
-                Stream result = await this.apiUrl
+                Stream result = await this.ApiUrl
                     .AppendPathSegment(string.Format(Constants.RetrieveMessageEndpoint, messageNum))
                     .GetStreamAsync();
 
