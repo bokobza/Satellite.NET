@@ -48,5 +48,10 @@ namespace Satellite.NET.Models
         /// Some detail about the returned error.
         /// </summary>
         public string Detail { get; set; }
+
+        public override string ToString()
+        {
+            return $"Error title: {this.Title}. Error detail: {this.Detail}";
+        }
     }
 }

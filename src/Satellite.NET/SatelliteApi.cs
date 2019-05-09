@@ -316,11 +316,11 @@ namespace Satellite.NET
         {
             ErrorResponseModel errorResponse = await ex.GetResponseJsonAsync<ErrorResponseModel>();
 
-            return new ApiException(errorResponse.Message)
+            return new ApiException(errorResponse != null ? errorResponse.Message : "An error occurred.")
             {
                 RequestUrl = ex.Call.Request.RequestUri,
                 StatusCode = ex.Call.HttpStatus,
-                Errors = errorResponse.Errors.Select(err => new Error { Title = err.Title, Detail = err.Detail })
+                Errors = errorResponse?.Errors?.Select(err => new Error { Title = err.Title, Detail = err.Detail })
             };
         }
     }
