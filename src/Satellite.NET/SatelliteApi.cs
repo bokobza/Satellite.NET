@@ -100,15 +100,17 @@ namespace Satellite.NET
         /// <summary>
         /// Increases the bid for an order sitting in the transmission queue.
         /// </summary>
-        /// <param name="bidIncrease">The amount in millisatoshis by which to increase the bid.</param>
         /// <param name="orderId">The order id.</param>
+        /// <param name="authToken">The authentiation token that was provided when the order was created.</param>
+        /// <param name="bidIncrease">The amount in millisatoshis by which to increase the bid.</param>
         /// <returns>A new in</returns>
-        public async Task<InvoiceModel> BumpBid(int bidIncrease, string orderId)
+        public async Task<InvoiceModel> BumpBid(string orderId, string authToken, int bidIncrease)
         {
             try
             {
                 InvoiceModel invoice = await this.apiUrl
                 .AppendPathSegment(string.Format(Constants.BumpOrderEndpoint, orderId))
+                .WithHeader("X-Auth-Token", authToken)
                 .PostMultipartAsync(mp => mp
                 .AddString("bid_increase", bidIncrease.ToString()))
                 .ReceiveJson<InvoiceModel>();
