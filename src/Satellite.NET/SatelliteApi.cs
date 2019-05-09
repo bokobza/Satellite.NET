@@ -124,7 +124,7 @@ namespace Satellite.NET
         }
 
         /// <summary>
-        /// Retreives an order.
+        /// Retrieves an order.
         /// </summary>
         /// <param name="orderId">The id of the order.</param>
         /// <param name="authToken">The authentiation token that was provided when the order was created.</param>
@@ -170,7 +170,7 @@ namespace Satellite.NET
         }
 
         /// <summary>
-        /// Retrieve a list of paid, but unsent orders in descending order of bid-per-byte.
+        /// Retrieves a list of paid, but unsent orders in descending order of bid-per-byte.
         /// </summary>
         /// <param name="limit">Optionally parameter. Specifies the limit of queued orders to return.</param>
         /// <returns>A collection of queued orders sorted by bid-per-byte descending.</returns>
