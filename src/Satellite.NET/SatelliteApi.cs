@@ -47,7 +47,7 @@ namespace Satellite.NET
         /// <param name="filePath">The file to send.</param>
         /// <param name="message">The message to send.</param>
         /// <returns>A lightning payment invoice.</returns>
-        public async Task<InvoiceModel> CreateOrder(int bid, string filePath, string message)
+        public async Task<InvoiceModel> CreateOrderAsync(int bid, string filePath, string message)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Satellite.NET
         /// <param name="authToken">The authentiation token that was provided when the order was created.</param>
         /// <param name="bidIncrease">The amount in millisatoshis by which to increase the bid.</param>
         /// <returns>A new in</returns>
-        public async Task<InvoiceModel> BumpBid(string orderId, string authToken, int bidIncrease)
+        public async Task<InvoiceModel> BumpBidAsync(string orderId, string authToken, int bidIncrease)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex) // TODO fix issue where this throws a 500.
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Satellite.NET
         /// <param name="orderId">The id of the order.</param>
         /// <param name="authToken">The authentiation token that was provided when the order was created.</param>
         /// <returns>The order.</returns>
-        public async Task<OrderModel> GetOrder(string orderId, string authToken)
+        public async Task<OrderModel> GetOrderAsync(string orderId, string authToken)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -152,7 +152,7 @@ namespace Satellite.NET
         /// <param name="orderId">The id of the order.</param>
         /// <param name="authToken">The authentiation token that was provided when the order was created.</param>
         /// <returns>A value indicating whether the cancellation was successful or not.</returns>
-        public async Task<bool> CancelOrder(string orderId, string authToken)
+        public async Task<bool> CancelOrderAsync(string orderId, string authToken)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex) // TODO fix issue where this throws a 500.
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -174,31 +174,31 @@ namespace Satellite.NET
         /// </summary>
         /// <param name="limit">Optionally parameter. Specifies the limit of queued orders to return.</param>
         /// <returns>A collection of queued orders sorted by bid-per-byte descending.</returns>
-        public async Task<IEnumerable<OrderModel>> GetQueuedOrders(int? limit = null)
+        public async Task<IEnumerable<OrderModel>> GetQueuedOrdersAsync(int? limit = null)
         {
             try
             {
-                IEnumerable<OrderModel> invoice = null;
+                IEnumerable<OrderModel> orders = null;
 
                 if (limit != null)
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetQueuedOrdersEndpoint)
                     .SetQueryParams(new { limit = limit.Value })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetQueuedOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
 
-                return invoice;
+                return orders;
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -207,31 +207,31 @@ namespace Satellite.NET
         /// </summary>
         /// <param name="before">Optional parameter. The 20 orders immediately prior to the given date will be returned.</param>
         /// <returns>A collection of pending orders sorted in reverse chronological order.</returns>
-        public async Task<IEnumerable<OrderModel>> GetSentOrders(DateTime? before = null)
+        public async Task<IEnumerable<OrderModel>> GetSentOrdersAsync(DateTime? before = null)
         {
             try
             {
-                IEnumerable<OrderModel> invoice = null;
+                IEnumerable<OrderModel> orders = null;
 
                 if (before != null)
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetSentOrdersEndpoint)
                     .SetQueryParams(new { before = before.Value.ToString("o") })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetSentOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
 
-                return invoice;
+                return orders;
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -240,31 +240,31 @@ namespace Satellite.NET
         /// </summary>
         /// <param name="before">Optional parameter. The 20 orders immediately prior to the given date will be returned.</param>
         /// <returns>A collection of pending orders sorted in reverse chronological order.</returns>
-        public async Task<IEnumerable<OrderModel>> GetPendingOrders(DateTime? before = null)
+        public async Task<IEnumerable<OrderModel>> GetPendingOrdersAsync(DateTime? before = null)
         {
             try
             {
-                IEnumerable<OrderModel> invoice = null;
+                IEnumerable<OrderModel> orders = null;
 
                 if (before != null)
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetPendingOrdersEndpoint)
                     .SetQueryParams(new { before = before.Value.ToString("o") })
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
                 else
                 {
-                    invoice = await this.ApiUrl
+                    orders = await this.ApiUrl
                     .AppendPathSegment(Constants.GetPendingOrdersEndpoint)
                     .GetJsonAsync<IEnumerable<OrderModel>>();
                 }
 
-                return invoice;
+                return orders;
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -272,7 +272,7 @@ namespace Satellite.NET
         /// Returns information about the c-lightning node where satellite API payments are terminated.
         /// </summary>
         /// <returns>Information about the c-lightning node where satellite API payments are terminated.</returns>
-        public async Task<InfoModel> GetInfo()
+        public async Task<InfoModel> GetInfoAsync()
         {
             try
             {
@@ -284,7 +284,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -293,7 +293,7 @@ namespace Satellite.NET
         /// </summary>
         /// <param name="messageNum">The message number.</param>
         /// <returns>A stream containing the message.</returns>
-        public async Task<Stream> RetrieveMessage(int messageNum)
+        public async Task<Stream> RetrieveMessageAsync(int messageNum)
         {
             try
             {
@@ -305,7 +305,7 @@ namespace Satellite.NET
             }
             catch (FlurlHttpException ex)
             {
-                throw await this.CreateApiException(ex);
+                throw await this.CreateApiExceptionAsync(ex);
             }
         }
 
@@ -314,11 +314,11 @@ namespace Satellite.NET
         /// </summary>
         /// <param name="ex">The error response data.</param>
         /// <returns>The created exception.</returns>
-        private async Task<ApiException> CreateApiException(FlurlHttpException ex)
+        private async Task<ApiException> CreateApiExceptionAsync(FlurlHttpException ex)
         {
             ErrorResponseModel errorResponse = await ex.GetResponseJsonAsync<ErrorResponseModel>();
 
-            return new ApiException(errorResponse != null ? errorResponse.Message : "An error occurred.")
+            return new ApiException(errorResponse != null ? errorResponse.Message : "An error occurred.", ex)
             {
                 RequestUrl = ex.Call.Request.RequestUri,
                 StatusCode = ex.Call.HttpStatus,

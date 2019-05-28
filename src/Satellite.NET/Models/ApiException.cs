@@ -32,6 +32,16 @@ namespace Satellite.NET.Models
         {
 
         }
+
+        /// <summary>
+        /// Initializes an instance of <see cref="ApiException"/>.
+        /// </summary>
+        /// <param name="message">An error message.</param>
+        /// <param name="innerException">The original exception.</param>
+        public ApiException(string message, Exception innerException) : base(message, innerException)
+        {
+
+        }
     }
 
     /// <summary>

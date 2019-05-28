@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
@@ -59,7 +58,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        InvoiceModel result = api.CreateOrder(bid, filePath, message).GetAwaiter().GetResult();
+                        InvoiceModel result = api.CreateOrderAsync(bid, filePath, message).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -96,7 +95,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        bool result = api.CancelOrder(orderId, authToken).GetAwaiter().GetResult();
+                        bool result = api.CancelOrderAsync(orderId, authToken).GetAwaiter().GetResult();
                         string message = result ? "Order cancelled" : "Order has not been cancelled";
                         Console.WriteLine(message);
                     }
@@ -134,7 +133,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        OrderModel result = api.GetOrder(orderId, authToken).GetAwaiter().GetResult();
+                        OrderModel result = api.GetOrderAsync(orderId, authToken).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -172,7 +171,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        InvoiceModel result = api.BumpBid(orderId, authToken, amount).GetAwaiter().GetResult();
+                        InvoiceModel result = api.BumpBidAsync(orderId, authToken, amount).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -194,7 +193,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        IEnumerable<OrderModel> result = api.GetQueuedOrders(limit).GetAwaiter().GetResult();
+                        IEnumerable<OrderModel> result = api.GetQueuedOrdersAsync(limit).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -216,7 +215,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        IEnumerable<OrderModel> result = api.GetPendingOrders(before).GetAwaiter().GetResult();
+                        IEnumerable<OrderModel> result = api.GetPendingOrdersAsync(before).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -238,7 +237,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        IEnumerable<OrderModel> result = api.GetSentOrders(before).GetAwaiter().GetResult();
+                        IEnumerable<OrderModel> result = api.GetSentOrdersAsync(before).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
                     catch (ApiException ex)
@@ -271,7 +270,7 @@ namespace Satellite.NET.Cli
                     try
                     {
                         SatelliteApi api = InitializeApi(test, url);
-                        Stream result = api.RetrieveMessage(num).GetAwaiter().GetResult();
+                        Stream result = api.RetrieveMessageAsync(num).GetAwaiter().GetResult();
                         StreamReader reader = new StreamReader(result);
                         Console.WriteLine(reader.ReadToEnd());
                     }
@@ -294,7 +293,7 @@ namespace Satellite.NET.Cli
                         try
                         {
                             SatelliteApi api = InitializeApi(test, url);
-                            InfoModel result = api.GetInfo().GetAwaiter().GetResult();
+                            InfoModel result = api.GetInfoAsync().GetAwaiter().GetResult();
                             ShowApiCallResult(result, pretty);
                         }
                         catch (ApiException ex)
