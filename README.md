@@ -29,9 +29,9 @@ Task<Stream> RetrieveMessageAsync(int messageNum);
 ```
 
 #### Command line interface
-A Cli using all the functionality above is provided [here](https://github.com/bokobza/Satellite.NET/tree/master/src/Satellite.NET.Cli)
+A Cli using all the functionality above is provided [here](https://github.com/bokobza/Satellite.NET/tree/master/src/Satellite.NET.Cli).
 
 #### TODO
 - Tests
-- subscription channels
+- Subscription channels
 - Web interface
