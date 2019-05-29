@@ -69,7 +69,7 @@ namespace Satellite.NET
                     .AppendPathSegment(Constants.CreateOrderEndpoint)
                     .PostMultipartAsync(mp => mp
                     .AddString("bid", bid.ToString())
-                    .AddFile("file", fs, "helo.txt"))
+                    .AddFile("file", fs, Path.GetFileName(filePath)))
                     .ReceiveJson<InvoiceModel>();
                 }
                 else if (!string.IsNullOrEmpty(message))
