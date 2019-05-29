@@ -1,7 +1,12 @@
 # Satellite.NET
 
-This is a C# SDK for the Blockstream Satellite API found [here](https://github.com/Blockstream/satellite-api).
+This is a C# SDK for the [Blockstream Satellite API](https://github.com/Blockstream/satellite-api).
 #### Using the SDK
+
+##### Installing
+
+Install vis nuget `Install-Package Satellite.NET`.  
+
 ##### Initializing the API object  
 To use Mainnet:
 `SatelliteApi api = new SatelliteApi();`  
