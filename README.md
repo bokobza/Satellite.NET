@@ -26,6 +26,7 @@ Task<IEnumerable<OrderModel>> GetQueuedOrdersAsync(int? limit = null);
 Task<IEnumerable<OrderModel>> GetSentOrdersAsync(DateTime? before = null);
 Task<InfoModel> GetInfoAsync();
 Task<Stream> RetrieveMessageAsync(int messageNum);
+void ReceiveTransmissionsMessages(Action<EventSourceMessageEventArgs> onReceive, Action<DisconnectEventArgs> onDisconnection);
 ```
 
 #### Command line interface
@@ -33,5 +34,4 @@ A Cli using all the functionality above is provided [here](https://github.com/bo
 
 #### TODO
 - Tests
-- Subscription channels
 - Web interface
