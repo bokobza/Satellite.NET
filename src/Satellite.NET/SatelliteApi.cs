@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EvtSource;
 using Flurl;
 using Flurl.Http;
 using Satellite.NET.Models;
@@ -307,6 +308,26 @@ namespace Satellite.NET
             {
                 throw await this.CreateApiExceptionAsync(ex);
             }
+        }
+
+        /// <summary>
+        /// Subscribe to server-sent events for transmission messages.
+        /// </summary>
+        /// <param name="onReceive">Code to execute on receiving a message.</param>
+        /// <param name="onDisconnection">Code to execute on disconnection. This is followed by automatic reconnection.</param>
+        public void ReceiveTransmissionsMessages(Action<EventSourceMessageEventArgs> onReceive, Action<DisconnectEventArgs> onDisconnection)
+        {
+            EventSourceReader evt = new EventSourceReader(new Uri($"{this.ApiUrl}/subscribe/transmissions")).Start();
+            evt.MessageReceived += (object sender, EventSourceMessageEventArgs e) =>
+            {
+                onReceive(e);
+            };
+            evt.Disconnected += async (object sender, DisconnectEventArgs e) =>
+            {
+                onDisconnection(e);
+                await Task.Delay(e.ReconnectDelay);
+                evt.Start(); // Reconnect to the same URL
+            };
         }
 
         /// <summary>

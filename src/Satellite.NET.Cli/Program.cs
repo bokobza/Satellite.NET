@@ -5,6 +5,7 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EvtSource;
 using Newtonsoft.Json;
 using Satellite.NET.Models;
 
@@ -304,6 +305,40 @@ namespace Satellite.NET.Cli
                 };
 
                 command.Add(infoCommand);
+
+                #endregion
+
+                #region Stream transmissions
+
+                var transmissionsCommand = new Command("stream-transmissions", description: "Subscribe to server-sent events for transmission messages.", symbols: commonOptions)
+                {
+                    Handler = CommandHandler.Create((bool test, string url, bool pretty) =>
+                    {
+                        try
+                        {
+                            Console.WriteLine("Listening to new messages. Press Enter to stop.");
+
+                            SatelliteApi api = InitializeApi(test, url);
+                            api.ReceiveTransmissionsMessages(
+                            (EventSourceMessageEventArgs e) =>
+                            {
+                                Console.WriteLine($"Event: {e.Event}. Message: {e.Message}. Id: {e.Id}.");
+                            }, 
+                            (DisconnectEventArgs e) =>
+                            {
+                                Console.WriteLine($"Retry in: {e.ReconnectDelay}. Error: {e.Exception.Message}");
+                            });
+
+                            Console.Read();
+                        }
+                        catch (ApiException ex)
+                        {
+                            ShowException(ex);
+                        }
+                    })
+                };
+
+                command.Add(transmissionsCommand);
 
                 #endregion
 
