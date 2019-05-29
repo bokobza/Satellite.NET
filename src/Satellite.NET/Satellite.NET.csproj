@@ -1,8 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>Satellite.NET</PackageId>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.0.1</Version>
+    <Authors>Jeremy Bokobza</Authors>
+    <Description>C# SDK for the Blockstream Satellite API</Description>
+    <PackageTags>SDK;Satellite;C#;Bitcoin;lightning</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/bokobza/Satellite.NET</PackageProjectUrl>
   </PropertyGroup>
 
  <ItemGroup>
