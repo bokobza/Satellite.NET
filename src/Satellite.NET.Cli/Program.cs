@@ -58,7 +58,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         InvoiceModel result = api.CreateOrderAsync(bid, filePath, message).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -95,7 +95,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         bool result = api.CancelOrderAsync(orderId, authToken).GetAwaiter().GetResult();
                         string message = result ? "Order cancelled" : "Order has not been cancelled";
                         Console.WriteLine(message);
@@ -133,7 +133,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         OrderModel result = api.GetOrderAsync(orderId, authToken).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -171,7 +171,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         InvoiceModel result = api.BumpBidAsync(orderId, authToken, amount).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -193,7 +193,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         IEnumerable<OrderModel> result = api.GetQueuedOrdersAsync(limit).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -215,7 +215,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         IEnumerable<OrderModel> result = api.GetPendingOrdersAsync(before).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -237,7 +237,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         IEnumerable<OrderModel> result = api.GetSentOrdersAsync(before).GetAwaiter().GetResult();
                         ShowApiCallResult(result, pretty);
                     }
@@ -270,7 +270,7 @@ namespace Satellite.NET.Cli
                 {
                     try
                     {
-                        SatelliteApi api = InitializeApi(test, url);
+                        ISatelliteApi api = InitializeApi(test, url);
                         Stream result = api.RetrieveMessageAsync(num).GetAwaiter().GetResult();
                         StreamReader reader = new StreamReader(result);
                         Console.WriteLine(reader.ReadToEnd());
@@ -293,7 +293,7 @@ namespace Satellite.NET.Cli
                     {
                         try
                         {
-                            SatelliteApi api = InitializeApi(test, url);
+                            ISatelliteApi api = InitializeApi(test, url);
                             InfoModel result = api.GetInfoAsync().GetAwaiter().GetResult();
                             ShowApiCallResult(result, pretty);
                         }
@@ -318,7 +318,7 @@ namespace Satellite.NET.Cli
                         {
                             Console.WriteLine("Listening to new messages. Press Enter to stop.");
 
-                            SatelliteApi api = InitializeApi(test, url);
+                            ISatelliteApi api = InitializeApi(test, url);
                             api.ReceiveTransmissionsMessages(
                             (EventSourceMessageEventArgs e) =>
                             {
